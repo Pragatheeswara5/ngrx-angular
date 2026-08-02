@@ -3,9 +3,9 @@
         <h2>ngApp</h2>
     </div>
     <div class="header-links">
-        <a routerLink="/">Home</a>
-        <a routerLink="/counter">Counter</a>
-        <a routerLink="/courses">Courses</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/counter" routerLinkActive="active">Counter</a>
+        <a routerLink="/courses" routerLinkActive="active">Courses</a>
     </div>
     <div class="header-auth-links">
         <a href="#">Login</a>
