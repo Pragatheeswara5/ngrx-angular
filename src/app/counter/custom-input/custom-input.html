@@ -4,8 +4,8 @@
     </div>
 
     <div class="custom-input-container">
-        <input type="text">
-        <button class="btn-increment-by">
+        <input type="text" [(ngModel)]="customValue">
+        <button class="btn-increment-by" (click)="onCustomValueButtonClicked()">
             Increment By
         </button>
     </div>

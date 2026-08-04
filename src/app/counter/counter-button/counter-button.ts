@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { increment, decrement, reset } from '../counter.actions';
+import { increment, decrement, reset } from '../states/counter.actions';
 import { CounterState } from '../states/counter.state';
 
 @Component({
