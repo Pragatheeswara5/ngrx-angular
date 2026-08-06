@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { CounterState } from '../states/counter.state';
 import { getCounter } from '../states/counter.selector';
 import { AsyncPipe } from '@angular/common';
+import { AppState } from '../../store/app.state';
 
 @Component({
   selector: 'app-counter-value',
@@ -12,7 +13,7 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './counter-value.css',
 })
 export class CounterValue implements OnInit{
-  constructor(private store: Store<{ counter: CounterState }>) {}
+  constructor(private store: Store<AppState>) {}
   counter$: Observable<number> | null = null;
 
   ngOnInit(): void {
