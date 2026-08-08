@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-card',
@@ -6,4 +7,7 @@ import { Component } from '@angular/core';
   templateUrl: './course-card.html',
   styleUrl: './course-card.css',
 })
-export class CourseCard {}
+export class CourseCard {
+
+  @Input() course: Course | null = null;
+}

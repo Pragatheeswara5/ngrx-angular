@@ -7,9 +7,20 @@
             <input type="text" placeholder="Search Course">
             <button>Search</button>
         </div>
+        <div class="course-create">
+            <button class="create-course-button" (click)="showCreateForm()">
+                Create Course
+            </button>
+        </div>
     </div>
 
     <div class="course-list-container">
-        <app-course-card></app-course-card>
+        <div *ngFor="let course of courses$ | async">
+            <app-course-card [course]="course"></app-course-card>
+        </div>
     </div>
+</div>
+
+<div *ngIf="showForm$ | async">
+    <app-add-course></app-add-course>
 </div>
