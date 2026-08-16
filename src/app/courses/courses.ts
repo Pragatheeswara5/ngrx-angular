@@ -7,7 +7,7 @@ import { AppState } from '../store/app.state';
 import { getCourses, showForm } from './state/courses.selector';
 import { CommonModule } from '@angular/common';
 import { AddCourse } from "./add-course/add-course";
-import { showCreateForm } from './state/courses.action';
+import { setEditMode, showCreateForm } from './state/courses.action';
 
 @Component({
   selector: 'app-courses',
@@ -28,6 +28,7 @@ export class Courses implements OnInit{
 
   showCreateForm(){
     this.store.dispatch(showCreateForm({value:true}))
+    this.store.dispatch(setEditMode({value:false}));
   }
 
 }

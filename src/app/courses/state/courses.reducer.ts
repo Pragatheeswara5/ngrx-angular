@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialState } from "./courses.state";
-import { createCourse, showCreateForm } from "./courses.action";
+import { createCourse, setEditMode, setSelectedCourse, showCreateForm } from "./courses.action";
 
 export const courseReducer = createReducer(
     initialState,
@@ -16,6 +16,18 @@ export const courseReducer = createReducer(
         return {
             ...state,
             courses:[...state.courses, course]
+        }
+    }),
+    on(setEditMode, (state, action)=>{
+        return {
+            ...state,
+            isEditMode: action.value
+        }
+    }),
+    on(setSelectedCourse, (state, action)=>{
+        return {
+            ...state,
+            selectedCourse: action.course
         }
     })
 )

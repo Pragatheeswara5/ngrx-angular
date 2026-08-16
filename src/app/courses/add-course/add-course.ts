@@ -1,22 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../store/app.state';
 import { Store } from '@ngrx/store';
-import { createCourse, showCreateForm } from '../state/courses.action';
+import { createCourse, setEditMode, showCreateForm } from '../state/courses.action';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { getEditMode, getSelectedCourse } from '../state/courses.selector';
+import { CommonModule } from '@angular/common';
+import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-add-course',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-course.html',
   styleUrl: './add-course.css',
 })
 export class AddCourse implements OnInit{
 
   courseForm:FormGroup;
+  editMode:boolean=false;
+  course:Course | null = null;
   constructor(private store:Store<AppState>){}
 
   ngOnInit() {
-      this.courseForm = new FormGroup({
+    this.store.select(getEditMode).subscribe((val)=>{
+      this.editMode=val;
+      console.log(this.editMode);
+    })
+    this.init();
+    this.subscribeToSelectedCourse();
+  }
+
+  init(){
+    this.courseForm = new FormGroup({
         title: new FormControl(null, [
           Validators.required,
           Validators.minLength(6),
@@ -35,6 +49,18 @@ export class AddCourse implements OnInit{
       });
   }
 
+  subscribeToSelectedCourse(){
+    this.store.select(getSelectedCourse).subscribe((data)=>{
+      this.course=data;
+      if(this.editMode && this.course){
+        const { image, ...rest } = this.course;
+        this.courseForm.patchValue(rest);
+      }else{
+        this.courseForm.reset();
+      }
+    })
+  }
+
   hideCreateForm(){
     this.store.dispatch(showCreateForm({value:false}))
   }
@@ -43,7 +69,11 @@ export class AddCourse implements OnInit{
     if(!this.courseForm.valid){
       return;
     }
-    this.store.dispatch(createCourse({course:this.courseForm.value}));
+    const formValue = this.courseForm.value;
+    if(this.editMode && !formValue.image){
+      formValue.image = this.course?.image;
+    }
+    this.store.dispatch(createCourse({course:formValue}));
     this.store.dispatch(showCreateForm({value:false}))
   }
 

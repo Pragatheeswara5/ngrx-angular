@@ -3,6 +3,8 @@ import { Course } from "../../models/course.model";
 export interface CourseState{
     courses:Course[]
     showForm:boolean
+    isEditMode:boolean
+    selectedCourse:Course
 }
 
 export const initialState:CourseState = {
@@ -24,5 +26,7 @@ export const initialState:CourseState = {
             price:59.99
         }
     ],
-    showForm:false
+    showForm:false,
+    isEditMode:false,
+    selectedCourse:null
 }
