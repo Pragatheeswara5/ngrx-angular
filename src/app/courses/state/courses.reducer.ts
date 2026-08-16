@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialState } from "./courses.state";
-import { createCourse, setEditMode, setSelectedCourse, showCreateForm, updateCourse } from "./courses.action";
+import { createCourse, deleteCourse, setEditMode, setSelectedCourse, showCreateForm, updateCourse } from "./courses.action";
 
 export const courseReducer = createReducer(
     initialState,
@@ -40,6 +40,13 @@ export const courseReducer = createReducer(
         return {
             ...state,
             courses:updatedCourses
+        }
+    }),
+    on(deleteCourse, (state, action)=>{
+        const filteredCourses = state.courses.filter(course=>course.id !== action.id);
+        return {
+            ...state,
+            courses: filteredCourses
         }
     })
 )
