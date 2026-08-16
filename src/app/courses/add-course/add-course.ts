@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../store/app.state';
 import { Store } from '@ngrx/store';
-import { createCourse, setEditMode, showCreateForm } from '../state/courses.action';
+import { createCourse, setEditMode, setSelectedCourse, showCreateForm, updateCourse } from '../state/courses.action';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { getEditMode, getSelectedCourse } from '../state/courses.selector';
 import { CommonModule } from '@angular/common';
@@ -65,16 +65,28 @@ export class AddCourse implements OnInit{
     this.store.dispatch(showCreateForm({value:false}))
   }
 
-  onCourseCreateForm(){
+  onCourseCreateOrUpdateForm(){
     if(!this.courseForm.valid){
       return;
     }
-    const formValue = this.courseForm.value;
-    if(this.editMode && !formValue.image){
-      formValue.image = this.course?.image;
+    
+    if(this.editMode){
+      const updatedCourse:Course={
+        id:this.course.id,
+        title:this.courseForm.value.title,
+        description:this.courseForm.value.description,
+        author:this.courseForm.value.author,
+        price:+this.courseForm.value.price,
+        image: this.courseForm.value.image || this.course.image
+      }
+      this.store.dispatch(updateCourse({course:updatedCourse}));
     }
-    this.store.dispatch(createCourse({course:formValue}));
-    this.store.dispatch(showCreateForm({value:false}))
+    else{
+      this.store.dispatch(createCourse({course:this.courseForm.value}));
+    }
+    this.store.dispatch(showCreateForm({value:false}));
+    this.store.dispatch(setEditMode({value:false}));
+    this.store.dispatch(setSelectedCourse({course:null}));
   }
 
   showTitleValidationErrors(){
